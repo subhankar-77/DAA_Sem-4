@@ -1,0 +1,63 @@
+//merge sort
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void merge(int ar[],int lb,int mid,int ub)
+{
+	int i,j,k,limit=ub-lb+1;
+	int *p=(int*)malloc(limit*sizeof(int));
+	i=lb;
+	j=mid+1;
+	k=0;
+	while(i<=mid && j<=ub)
+	{
+		if(ar[i]<=ar[j])
+		p[k++]=ar[i++];
+		else
+		p[k++]=ar[j++];
+	}
+	while(i<=mid)
+ 		p[k++]=ar[i++];
+	while(j<=ub)
+		p[k++]=ar[j++];
+	for(i=lb,k=0;k<limit;i++,k++)
+		ar[i]=p[k];
+
+}
+void split(int ar[],int lb,int ub)
+{
+	if(lb<ub)
+	{
+		int mid=(lb+ub)/2;
+		split(ar,lb,mid);
+		split(ar,mid+1,ub);
+		merge(ar,lb,mid,ub);
+	}
+}
+void printArray(int ar[], int n)
+{
+	int i;
+	for (i=0;i<n;i++)
+		printf("%d	", ar[i]);
+	printf("\n");
+}
+int main()
+{
+	int i,k,n,p;
+	int ar[100];
+	printf("Enter no of elements ");
+	scanf("%d", &n);
+	for(i=0;i<n;i++)
+	{
+	 	printf("\n Enter the elements ");
+		scanf("%d", &ar[i]);
+	}
+	printf("given array is	");
+	printArray(ar, n);
+	
+	split(ar,0,n-1);
+	
+	printf("sorted array is	");
+	printArray(ar, n);
+}
