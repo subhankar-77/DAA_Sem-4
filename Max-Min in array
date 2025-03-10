@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+void DAA_MAX_MIN(int a[], int beg, int end, int *max, int *min) {
+    if (beg == end) {
+        *max = a[beg];
+        *min = a[beg];
+    } else if (beg + 1 == end) {
+        if (a[beg] < a[end]) {
+            *max = a[end];
+            *min = a[beg];
+        } else {
+            *max = a[beg];
+            *min = a[end];
+        }
+    } else {
+        int mid = (beg + end) / 2;
+        int LeftMax, LeftMin, RightMax, RightMin;
+        
+        DAA_MAX_MIN(a, beg, mid, &LeftMax, &LeftMin);
+        DAA_MAX_MIN(a, mid + 1, end, &RightMax, &RightMin);
+
+        *max = (LeftMax > RightMax) ? LeftMax : RightMax;
+        *min = (LeftMin < RightMin) ? LeftMin : RightMin;
+    }
+}
+
+int main() {
+    int i, n;
+    printf("Enter the no. of elements: ");
+    scanf("%d", &n);
+    
+    int a[n];
+    printf("Enter each element: ");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &a[i]);
+    }
+
+    int max, min;
+    DAA_MAX_MIN(a, 0, n - 1, &max, &min);
+
+    printf("Max: %d, Min: %d\n", max, min);
+    return 0;
+}
