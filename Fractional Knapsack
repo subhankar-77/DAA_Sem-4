@@ -1,0 +1,75 @@
+// Fractional Knapsack
+
+#include <stdio.h>
+#include <limits.h>
+
+void knapsack(int n, int p[10], int w[10], int sw) {
+    int i, j;
+    float tp = 0.0, temp;
+    float ratio[10];
+
+    // Calculate value/weight ratio
+    for (i = 0; i < n; i++) {
+        ratio[i] = (float)p[i] / w[i];
+    }
+
+    // Sort items by ratio in descending order
+    for (i = 0; i < n; i++) {
+        for (j = i + 1; j < n; j++) {
+            if (ratio[i] < ratio[j]) {
+                // Swap ratio
+                temp = ratio[i];
+                ratio[i] = ratio[j];
+                ratio[j] = temp;
+
+                // Swap profits
+                temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+
+                // Swap weights
+                temp = w[i];
+                w[i] = w[j];
+                w[j] = temp;
+            }
+        }
+    }
+
+    // Knapsack logic
+    for (i = 0; i < n; i++) {
+        if (sw >= w[i]) {
+            sw -= w[i];
+            tp += p[i];
+        } else {
+            tp += ((float)sw / w[i]) * p[i];
+            break;
+        }
+    }
+
+    printf("Therefore the total profit is: %.2f\n", tp);
+}
+
+int main() {
+    int i, n, sw;
+    int p[10], w[10];
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter the profits of the items:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &p[i]);
+    }
+
+    printf("Enter the weights of the items:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &w[i]);
+    }
+
+    printf("Enter the capacity of the knapsack: ");
+    scanf("%d", &sw);
+
+    knapsack(n, p, w, sw);
+
+    return 0;
+}
